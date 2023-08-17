@@ -1,19 +1,13 @@
 from django.test import TestCase
-from .models import MenuItem
-from .serializers import MenuItemSerializer
+from Restaurant.models import MenuItem
+from Restaurant.serializers import MenuItemSerializer
+from .constants import test_instances
 import random
-
-test_instances = [
-    { "title" : "IceCream", "price" : 20},
-    { "title" : "Grilled Salmon", "price" : 80},
-    { "title" : "Chicken Fajita", "price" : 60},
-    { "title" : "Beef Burrito", "price" : 15},
-]
 
 # test for menu items
 class MenuItemTest(TestCase):
     def setUp(self):
-        # setup a local database
+        # setup a local database for testing
         for menu in test_instances:
             MenuItem.objects.create(title=menu["title"],
                                     price=menu["price"])
@@ -24,7 +18,7 @@ class MenuItemTest(TestCase):
 
     def test_get_item(self):
         # get a random instance and test its  
-        id = random.randint(0, len(test_instances)) 
+        id = random.randint(0, len(test_instances)-1) 
         item = MenuItem.objects.get(title=test_instances[id]["title"])
         self.check_equal(item, id)
 
